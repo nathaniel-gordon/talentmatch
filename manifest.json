@@ -1,0 +1,12 @@
+{
+  "name": "talentmatch",
+  "category": "ML",
+  "architecture": "ontology graph + bipartite matching",
+  "interface": "library + examples \u2014 python examples/match_resumes.py",
+  "testing": "property tests (symmetry, monotonicity)",
+  "demo_cmd": "python examples/match_resumes.py",
+  "test_cmd": "python -m pytest tests -q",
+  "entry_points": [
+    "examples/match_resumes.py"
+  ]
+}
