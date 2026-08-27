@@ -85,6 +85,13 @@ ARCHETYPES: dict[str, dict] = {
                  "rest-api", "testing", "system-design"],
         "nice": ["graphql", "aws", "redis", "python", "ci-cd"],
     },
+    "security-engineer": {
+        "title": "Trust Engineer",
+        "domain": "application and platform hardening",
+        "core": ["security", "python", "linux", "docker", "kubernetes",
+                 "aws", "observability", "ci-cd", "terraform", "bash"],
+        "nice": ["golang", "kafka", "grpc", "system-design", "testing"],
+    },
 }
 
 _SENIORITY_WORD = {0: "Intern", 1: "Junior", 2: "", 3: "Senior", 4: "Staff", 5: "Principal"}

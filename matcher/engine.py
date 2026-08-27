@@ -20,6 +20,7 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import average_precision_score, brier_score_loss, roc_auc_score
 
+from .assignment import Assignment, greedy_assignment, optimal_assignment
 from .bias import blind_redact
 from .datagen import SCHOOL_PRESTIGE, SyntheticCandidate, SyntheticJob, generate, ground_truth_qualified
 from .gap import GapReport, analyze_gap
@@ -126,6 +127,26 @@ class MatchEngine:
         """Shortlist for a person (job search direction)."""
         row = self._results(blind)[self.cand_index[candidate_id]]
         return sorted(row, key=lambda r: (-r.score, r.job_id))[:top]
+
+    def assign(self, blind: bool = False, qualification_only: bool = False,
+               greedy: bool = False) -> Assignment:
+        """Exclusive candidate-to-job matching (Hungarian, or greedy baseline).
+
+        Independent shortlists can recommend the same person for every posting.
+        This solves the round as a bipartite matching: each candidate and each
+        job appears in at most one pair, maximising the sum of scores.
+        """
+        matrix = self.score_matrix(blind=blind, qualification_only=qualification_only)
+        cand_ids = [c.candidate_id for c in self.candidates]
+        job_ids = [j.job_id for j in self.jobs]
+        solver = greedy_assignment if greedy else optimal_assignment
+        assignment = solver(matrix, cand_ids, job_ids)
+        rows = self._results(blind)
+        for pair in assignment.pairs:
+            ci = self.cand_index[pair.candidate_id]
+            ji = self.job_index[pair.job_id]
+            pair.result = rows[ci][ji]
+        return assignment
 
     def gap(self, candidate_id: str, job_id: str, blind: bool = False) -> GapReport:
         pool = self.blind_candidates if blind else self.candidates

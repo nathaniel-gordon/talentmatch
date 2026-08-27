@@ -1,7 +1,7 @@
 {
   "name": "talentmatch",
   "category": "ML",
-  "architecture": "ontology graph + bipartite matching",
+  "architecture": "ontology graph + score matrix + Hungarian bipartite assignment",
   "interface": "library + examples \u2014 python examples/match_resumes.py",
   "testing": "property tests (symmetry, monotonicity)",
   "demo_cmd": "python examples/match_resumes.py",
